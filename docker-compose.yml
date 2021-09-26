@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+  e_comm_api:
+    build: 
+      context: ./e-comm-api
+    container_name: e_comm_api
+    ports: 
+      - 8080:8080 
+    restart: on-failure
+    volumes: 
+      - ./e-comm-api:/e_comm_api/api
+    depends_on: 
+      - e_comm_mysql
+    networks:
+      - e_comm
+
+  e_comm_mysql:
+    image: mysql:5.7
+    container_name: e_comm_db_mysql
+    ports: 
+      - 3306:3306
+    environment: 
+      - MYSQL_ROOT_HOST=${DB_HOST} 
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - database_mysql:/var/lib/mysql
+    networks:
+      - e_comm
+
+volumes: 
+  database_mysql:
+
+networks: 
+  e_comm:  
