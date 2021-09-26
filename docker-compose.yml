@@ -1,5 +1,18 @@
 version: "3.7"
 services:
+
+  e_comm_ui:
+    build:
+      context: ./e-comm-ui
+    container_name: e-comm-ui
+    ports: 
+      - 3000:3000
+    volumes: 
+      - ./e-comm-ui:/e-comm-ui/app
+      - /e-comm-ui/app/node_modules
+    networks: 
+      - e_comm
+
   e_comm_api:
     build: 
       context: ./e-comm-api

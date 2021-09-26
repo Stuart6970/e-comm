@@ -15,15 +15,14 @@ import (
 )
 
 func (server *Server) CreateCatalogItem(w http.ResponseWriter, r *http.Request) {
-	// body, err := ioutil.ReadAll(r.Body)
-	// if err != nil {
-	// 	responses.ERROR(w, http.StatusUnprocessableEntity, err)
-	// 	return
-	// }
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+		return
+	}
 	catalogItem := models.CatalogItem{}
-	var err error
-	err = json.NewDecoder(r.Body).Decode(&catalogItem)
-	//err = json.Unmarshal(body, &catalogItem)
+	err = json.Unmarshal(body, &catalogItem)
+	fmt.Println(catalogItem.AvailableStock)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 		return
