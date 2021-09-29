@@ -15,8 +15,8 @@ type CatalogItem struct {
 	Name            string          `gorm:"size:255;not null;" json:"name"`
 	Description     string          `gorm:"size:500;" json:"description"`
 	Price           decimal.Decimal `gorm:"type:decimal(10,2);" json:"price"`
-	PictureFileName string          `gorm:"size:255;not null;unique" json:"picture_file_name"`
-	PictureUri      string          `gorm:"size:500;not null;unique" json:"picture_uri"`
+	PictureFileName string          `gorm:"size:255;not null;" json:"picture_file_name"`
+	PictureUri      string          `gorm:"size:500;not null;" json:"picture_uri"`
 	AvailableStock  uint32          `gorm:"not null" json:"available_stock"`
 	CreatedAt       time.Time       `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt       time.Time       `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
@@ -26,20 +26,18 @@ func (c *CatalogItem) Prepare() {
 	c.ID = 0
 	c.Name = html.EscapeString(strings.TrimSpace((c.Name)))
 	c.Description = html.EscapeString(strings.TrimSpace((c.Description)))
-	c.Price = decimal.NewFromFloat(0.00)
 	c.PictureFileName = html.EscapeString(strings.TrimSpace((c.PictureFileName)))
 	c.PictureUri = html.EscapeString(strings.TrimSpace((c.PictureUri)))
-	c.AvailableStock = 0
 	c.CreatedAt = time.Now()
 	c.UpdatedAt = time.Now()
 }
 
 func (c *CatalogItem) Validate() error {
 	if c.Name == "" {
-		return errors.New("Nane is required")
+		return errors.New("name is required")
 	}
 	if c.Description == "" {
-		return errors.New("Description is required")
+		return errors.New("description is required")
 	}
 	if c.PictureFileName == "" {
 		return errors.New("PictureFileName is required")
