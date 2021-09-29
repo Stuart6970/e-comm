@@ -2,8 +2,6 @@ package models
 
 import (
 	"errors"
-	"html"
-	"strings"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -20,16 +18,6 @@ type CatalogItem struct {
 	AvailableStock  uint32          `gorm:"not null" json:"available_stock"`
 	CreatedAt       time.Time       `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt       time.Time       `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
-}
-
-func (c *CatalogItem) Prepare() {
-	c.ID = 0
-	c.Name = html.EscapeString(strings.TrimSpace((c.Name)))
-	c.Description = html.EscapeString(strings.TrimSpace((c.Description)))
-	c.PictureFileName = html.EscapeString(strings.TrimSpace((c.PictureFileName)))
-	c.PictureUri = html.EscapeString(strings.TrimSpace((c.PictureUri)))
-	c.CreatedAt = time.Now()
-	c.UpdatedAt = time.Now()
 }
 
 func (c *CatalogItem) Validate() error {
@@ -90,7 +78,7 @@ func (c *CatalogItem) FindCatalogItemById(db *gorm.DB, cid uint64) (*CatalogItem
 
 func (c *CatalogItem) UpdateCatalogItem(db *gorm.DB) (*CatalogItem, error) {
 	var err error
-	err = db.Debug().Model(&CatalogItem{}).Updates(CatalogItem{Name: c.Name, Description: c.Description,
+	err = db.Debug().Model(&CatalogItem{}).Updates(CatalogItem{ID: c.ID, Name: c.Name, Description: c.Description,
 		Price: c.Price, AvailableStock: c.AvailableStock, PictureFileName: c.PictureFileName,
 		PictureUri: c.PictureUri, UpdatedAt: time.Now()}).Error
 	if err != nil {

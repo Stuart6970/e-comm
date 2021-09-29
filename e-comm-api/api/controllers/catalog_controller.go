@@ -28,7 +28,6 @@ func (server *Server) CreateCatalogItem(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	catalogItem.Prepare()
 	err = catalogItem.Validate()
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
@@ -108,7 +107,7 @@ func (server *Server) UpdateCatalogItem(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	catalogItemUpdate.Prepare()
+	// Perform validation
 	err = catalogItemUpdate.Validate()
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
